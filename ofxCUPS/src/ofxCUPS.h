@@ -14,6 +14,7 @@ public:
     
     
     void listPrinters();
+    void getPrintersNames(vector<string> &_list);
     void printImage(string filename);
     void printImage(string filename,bool isAbsolutePath);
 

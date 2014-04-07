@@ -30,6 +30,25 @@ void ofxCUPS::listPrinters()
     cout << "----------------------------------------" << endl;
 }
 
+void ofxCUPS::getPrintersNames(vector<string> &_list) {
+    int i;
+    cups_dest_t *dests, *dest;
+    int num_dests = cupsGetDests(&dests);
+    
+    for (i = num_dests, dest = dests; i > 0; i --, dest ++)
+    {
+        if (dest->instance) {
+            _list.push_back(dest->name);
+            printf("%s/%s\n", dest->name, dest->instance);
+        }
+        else {
+            _list.push_back(dest->name);
+        }
+    }
+
+}
+
+
 void ofxCUPS::printImage(string filename)
 {
     printImage(filename, false);
@@ -51,7 +70,11 @@ void ofxCUPS::printImage(string filename, bool isAbsolutePath)
     }
 
     //optionen = "media=DS_PC_size"; //ds40
-    //num_options = cupsParseOptions(optionen.c_str(), num_options, &options);  
+    //num_options = cupsParseOptions(optionen.c_str(), num_options, &options);
+    //string optionen = "media=Letter, landscape"; //ds40
+    //string optionen = "landscape"; //ds40
+    string optionen = "media=Postcard(4x6in)"; //ds40
+    num_options = cupsParseOptions(optionen.c_str(), num_options, &options);
     
     int last_job_id = cupsPrintFile(printerName.c_str(),
                                     printFile.c_str(),
